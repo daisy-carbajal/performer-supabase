@@ -1,0 +1,24 @@
+# Node modules
+node_modules/
+
+# Build artifacts
+dist/
+build/
+
+# Environment files
+.env
+
+# Log files
+npm-debug.log
+yarn-error.log
+
+# IDE specific files
+.idea/
+.vscode/
+
+# Temporary files
+*.tmp
+
+# Compiled output
+*.js
+*.js.map

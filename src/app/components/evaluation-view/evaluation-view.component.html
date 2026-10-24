@@ -1,0 +1,133 @@
+<div class="surface-card p-4 shadow-2 border-round">
+  <p-table
+    #dt
+    [value]="evaluations"
+    [rows]="10"
+    [paginator]="true"
+    [(selection)]="selectedEvaluations"
+    [rowHover]="true"
+    dataKey="evaluationMasterID"
+    currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros."
+    [showCurrentPageReport]="true"
+  >
+    <ng-template pTemplate="caption">
+      <div *ngIf="evaluation360ActiveID" class="mb-3">
+        <p-button
+          label="Regresar a Evaluaciones360"
+          icon="pi pi-arrow-left"
+          (click)="goBack()"
+          class="p-button-outlined"
+        ></p-button>
+      </div>
+      <div class="flex align-items-center justify-content-between">
+        <h2 class="text-700 m-0">Evaluaciones</h2>
+        <!--<span class="p-input-icon-left">
+              <i class="pi pi-search"></i>
+              <input
+                pInputText
+                type="text"
+                (input)="dt.filterGlobal($any($event.target).value, 'contains')"
+                placeholder=" Search"
+              />
+            </span>-->
+      </div>
+    </ng-template>
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="EvaluationSavedName">
+          <div class="flex flex-shrink-0">
+            Evaluación <p-sortIcon field="EvaluationSavedName"></p-sortIcon>
+          </div>
+        </th>
+        <th pSortableColumn="EvaluateeName">
+          <div class="flex flex-shrink-0">
+            Empleado <p-sortIcon field="EvaluateeName"></p-sortIcon>
+          </div>
+        </th>
+        <th pSortableColumn="EvaluatorName">
+          <div class="flex flex-shrink-0">
+            Evaluador <p-sortIcon field="EvaluatorName"></p-sortIcon>
+          </div>
+        </th>
+        <th pSortableColumn="DateCreated">
+          <div class="flex flex-shrink-0">
+            Fecha <p-sortIcon field="DateCreated"></p-sortIcon>
+          </div>
+        </th>
+        <th pSortableColumn="DateToReview">
+          <div class="flex flex-shrink-0">
+            Revisión <p-sortIcon field="DateReviewed"></p-sortIcon>
+          </div>
+        </th>
+        <th pSortableColumn="Status">
+          <div class="flex flex-shrink-0">
+            Estado <p-sortIcon field="Status"></p-sortIcon>
+          </div>
+        </th>
+        <th pSortableColumn="TotalPonderedScore">
+          <div class="flex flex-shrink-0">
+            Puntaje <p-sortIcon field="TotalPonderedScore"></p-sortIcon>
+          </div>
+        </th>
+        <th pSortableColumn="Acknowledged">
+          <div class="flex flex-shrink-0">
+            Estado <p-sortIcon field="Acknowledged"></p-sortIcon>
+          </div>
+        </th>
+        <th></th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-evaluation>
+      <tr>
+        <td>{{ evaluation.EvaluationSavedName }}</td>
+        <td>{{ evaluation.EvaluateeName }}</td>
+        <td>{{ evaluation.EvaluatorName }}</td>
+        <td>{{ evaluation.DateCreated | date : "yyyy-MM-dd" }}</td>
+        <td>{{ evaluation.DateToReview | date : "yyyy-MM-dd" }}</td>
+        <td>{{ evaluation.TotalPonderedScore }} / 5</td>
+        <td>
+          <p-tag
+            [rounded]="true"
+            [value]="evaluation.Acknowledged ? 'Revisado' : 'Pendiente'"
+            [severity]="evaluation.Acknowledged ? 'success' : 'warning'"
+          ></p-tag>
+        </td>
+        <td>
+          <p-tag
+            [rounded]="true"
+            [value]="evaluation.Status ? 'En Curso' : 'Atrasada'"
+            [severity]="evaluation.Status ? 'info' : 'danger'"
+          ></p-tag>
+        </td>
+        <td>
+          <div class="flex flex-shrink-0">
+          <p-button
+            icon="pi pi-pencil"
+            class="mr-2"
+            [rounded]="true"
+            [outlined]="true"
+            severity="success"
+            (click)="goToEvaluationDetails(evaluation.EvaluationMasterID)"
+          ></p-button>
+          <p-button
+            icon="pi pi-trash"
+            severity="danger"
+            [rounded]="true"
+            [outlined]="true"
+            (click)="deleteEvaluation(evaluation.EvaluationMasterID)"
+          ></p-button>
+        </div>
+        </td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="summary">
+      <div class="flex align-items-center justify-content-between">
+        En total hay {{ evaluations ? evaluations.length : 0 }} registros.
+      </div>
+    </ng-template>
+  </p-table>
+</div>
+<router-outlet></router-outlet>

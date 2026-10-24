@@ -1,0 +1,416 @@
+<div class="card flex justify-content-left p-3">
+  <p-sidebar #sidebarRef [(visible)]="sidebarVisible">
+    <ng-template pTemplate="headless">
+      <div class="flex flex-column h-full purple-500">
+        <div class="flex justify-content-between px-4 pt-3 flex-shrink-0">
+          <p-button (onClick)="closeCallback($event)" icon="pi pi-times" rounded="true" outlined="true" styleClass="h-2rem w-2rem"></p-button>
+        </div>
+        <div
+          class="flex align-items-center justify-content-center px-4 pt-3 flex-shrink-0 mt-2"
+        >
+          <span
+            ><img
+              src="../../../assets/icon.svg"
+              alt="Icono HR"
+              width="36"
+              height="36"
+          /></span>
+          <span
+            [routerLink]="['/home']"
+            class="inline-flex align-items-center gap-2"
+          >
+            <span class="font-bold text-3xl text-primary ml-2"
+              >PERFORMER</span
+            >
+          </span>
+        </div>
+        <div class="overflow-y-auto">
+          <ul class="list-none p-3 m-0">
+              <ul class="list-none p-0 m-0 overflow-hidden">
+                <li>
+                  <a
+                    pRipple
+                    pStyleClass="@next"
+                    enterClass="hidden"
+                    enterActiveClass="slidedown"
+                    leaveToClass="hidden"
+                    leaveActiveClass="slideup"
+                    class="no-underline flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple"
+                  >
+                    <i class="pi pi-users mr-2"></i>
+                    <span class="font-medium">Usuarios</span>
+                    <i class="pi pi-chevron-down ml-auto"></i>
+                  </a>
+                  <ul
+                    class="list-none py-0 pl-3 pr-0 m-0 hidden overflow-y-hidden transition-all transition-duration-400 transition-ease-in-out"
+                  >
+                    <li>
+                      <a
+                        pRipple
+                        class="no-underline flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple"
+                        [routerLink]="['/home', 'user']"
+                      >
+                        <i class="pi pi-eye mr-2"></i>
+                        <span class="font-medium">Ver Usuarios</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        pRipple
+                        class="no-underline flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple"
+                        [routerLink]="['/home', 'user', 'change']"
+                      >
+                        <i class="pi pi-arrow-right-arrow-left mr-2"></i>
+                        <span class="font-medium">Cambio de Posición</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        pRipple
+                        class="no-underline flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple"
+                        [routerLink]="['/home', 'user', 'org-chart']"
+                      >
+                        <i class="pi pi-sitemap mr-2"></i>
+                        <span class="font-medium">Organigrama</span>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <a
+                    pRipple
+                    pStyleClass="@next"
+                    enterClass="hidden"
+                    enterActiveClass="slidedown"
+                    leaveToClass="hidden"
+                    leaveActiveClass="slideup"
+                    class="no-underline flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple"
+                  >
+                    <i class="pi pi-briefcase mr-2"></i>
+                    <span class="font-medium">Puestos Laborales</span>
+                    <i class="pi pi-chevron-down ml-auto"></i>
+                  </a>
+                  <ul
+                    class="list-none py-0 pl-3 pr-0 m-0 hidden overflow-y-hidden transition-all transition-duration-400 transition-ease-in-out"
+                  >
+                    <li>
+                      <a
+                        pRipple
+                        class="no-underline flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple"
+                        [routerLink]="['/home', 'jobtitle']"
+                      >
+                        <i class="pi pi-eye mr-2"></i>
+                        <span class="font-medium">Ver Puestos Laborales</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        pRipple
+                        class="no-underline flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple"
+                        [routerLink]="['/home', 'jobtitle', 'config']"
+                      >
+                        <i class="pi pi-id-card mr-2"></i>
+                        <span class="font-medium">Niveles de Puestos</span>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <a
+                    pRipple
+                    [routerLink]="['/home', 'department']"
+                    class="no-underline flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple"
+                  >
+                    <i class="pi pi-warehouse mr-2"></i>
+                    <span class="font-medium">Departamentos</span>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    pRipple
+                    pStyleClass="@next"
+                    enterClass="hidden"
+                    enterActiveClass="slidedown"
+                    leaveToClass="hidden"
+                    leaveActiveClass="slideup"
+                    class="no-underline flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple"
+                  >
+                    <i class="pi pi-bookmark mr-2"></i>
+                    <span class="font-medium">Roles</span>
+                    <i class="pi pi-chevron-down ml-auto"></i>
+                  </a>
+                  <ul
+                    class="list-none py-0 pl-3 pr-0 m-0 hidden overflow-y-hidden transition-all transition-duration-400 transition-ease-in-out"
+                  >
+                    <li>
+                      <a
+                        pRipple
+                        class="no-underline flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple"
+                        [routerLink]="['/home', 'roles']"
+                      >
+                        <i class="pi pi-eye mr-2"></i>
+                        <span class="font-medium">Ver Roles</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        pRipple
+                        class="no-underline flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple"
+                        [routerLink]="['/home', 'roles', 'permissions']"
+                      >
+                        <i class="pi pi-id-card mr-2"></i>
+                        <span class="font-medium">Permisos</span>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <a
+                    pRipple
+                    pStyleClass="@next"
+                    enterClass="hidden"
+                    enterActiveClass="slidedown"
+                    leaveToClass="hidden"
+                    leaveActiveClass="slideup"
+                    class="no-underline flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple"
+                  >
+                    <i class="pi pi-calendar-clock mr-2"></i>
+                    <span class="font-medium">Incidentes</span>
+                    <i class="pi pi-chevron-down ml-auto"></i>
+                  </a>
+                  <ul
+                    class="list-none py-0 pl-3 pr-0 m-0 hidden overflow-y-hidden transition-all transition-duration-400 transition-ease-in-out"
+                  >
+                    <li>
+                      <a
+                        pRipple
+                        class="no-underline flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple"
+                        [routerLink]="['/home', 'incident']"
+                      >
+                        <i class="pi pi-list-check mr-2"></i>
+                        <span class="font-medium">Ver Incidentes</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        pRipple
+                        class="no-underline flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple"
+                        [routerLink]="['/home', 'incident', 'new']"
+                      >
+                        <i class="pi pi-file-plus mr-2"></i>
+                        <span class="font-medium">Nuevo Incidente</span>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <a
+                    pRipple
+                    [routerLink]="['/home', 'feedback']"
+                    class="no-underline flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple"
+                  >
+                    <i class="pi pi-comments mr-2"></i>
+                    <span class="font-medium">Retroalimentación</span>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    pRipple
+                    pStyleClass="@next"
+                    enterClass="hidden"
+                    enterActiveClass="slidedown"
+                    leaveToClass="hidden"
+                    leaveActiveClass="slideup"
+                    class="no-underline flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple"
+                  >
+                    <i class="pi pi-clipboard mr-2"></i>
+                    <span class="font-medium">Evaluación</span>
+                    <i class="pi pi-chevron-down ml-auto"></i>
+                  </a>
+                  <ul
+                    class="list-none py-0 pl-3 pr-0 m-0 hidden overflow-y-hidden transition-all transition-duration-400 transition-ease-in-out"
+                  >
+                    <li>
+                      <a
+                        pRipple
+                        class="no-underline flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple"
+                        [routerLink]="['/home', 'evaluation', 'saved']"
+                      >
+                        <i class="pi pi-folder mr-2"></i>
+                        <span class="font-medium">Evaluaciones Existentes</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        pRipple
+                        class="no-underline flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple"
+                        [routerLink]="['/home', 'evaluation', 'records']"
+                        >
+                        <i class="pi pi-book mr-2"></i>
+                        <span class="font-medium"
+                          >Registro de Evaluaciones</span
+                        >
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        pRipple
+                        class="no-underline flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple"
+                        [routerLink]="['/home', 'evaluation', 'eval360']"
+                        >
+                        <i class="pi pi-gauge mr-2"></i>
+                        <span class="font-medium"
+                          >Evaluaciones 360</span
+                        >
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        pRipple
+                        class="no-underline flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple"
+                        [routerLink]="['/home', 'evaluation', 'new']"
+                        >
+                        <i class="pi pi-file-plus mr-2"></i>
+                        <span class="font-medium">Nueva Evaluación</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        pRipple
+                        class="no-underline flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple"
+                        [routerLink]="['/home', 'evaluation','config']"
+                      >
+                        <i class="pi pi-cog mr-2"></i>
+                        <span class="font-medium">Configuración</span>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <a
+                    pRipple
+                    pStyleClass="@next"
+                    enterClass="hidden"
+                    enterActiveClass="slidedown"
+                    leaveToClass="hidden"
+                    leaveActiveClass="slideup"
+                    class="no-underline flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple"
+                  >
+                    <i class="pi pi-flag mr-2"></i>
+                    <span class="font-medium">Acciones Disciplinarias</span>
+                    <i class="pi pi-chevron-down ml-auto"></i>
+                  </a>
+                  <ul
+                    class="list-none py-0 pl-3 pr-0 m-0 hidden overflow-y-hidden transition-all transition-duration-400 transition-ease-in-out"
+                  >
+                    <li>
+                      <a
+                        pRipple
+                        class="no-underline flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple"
+                        [routerLink]="['/home', 'da']"
+                      >
+                        <i class="pi pi-list-check mr-2"></i>
+                        <span class="font-medium">Ver Acciones Disciplinarias</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        pRipple
+                        class="no-underline flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple"
+                        [routerLink]="['/home', 'da', 'new']"
+                      >
+                        <i class="pi pi-pen-to-square mr-2"></i>
+                        <span class="font-medium">Nueva Acción Disciplinaria</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        pRipple
+                        class="no-underline flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple"
+                        [routerLink]="['/home', 'da', 'config']"
+                      >
+                        <i class="pi pi-cog mr-2"></i>
+                        <span class="font-medium">Configuración</span>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <a
+                    pRipple
+                    pStyleClass="@next"
+                    enterClass="hidden"
+                    enterActiveClass="slidedown"
+                    leaveToClass="hidden"
+                    leaveActiveClass="slideup"
+                    class="no-underline flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple"
+                  >
+                    <i class="pi pi-file-o mr-2"></i>
+                    <span class="font-medium">Planes de Mejora</span>
+                    <i class="pi pi-chevron-down ml-auto"></i>
+                  </a>
+                  <ul
+                    class="list-none py-0 pl-3 pr-0 m-0 hidden overflow-y-hidden transition-all transition-duration-400 transition-ease-in-out"
+                  >
+                    <li>
+                      <a
+                        pRipple
+                        class="no-underline flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple"
+                        [routerLink]="['/home', 'action-plan']"
+                      >
+                        <i class="pi pi-list-check mr-2"></i>
+                        <span class="font-medium">Ver Planes de Mejora</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        pRipple
+                        class="no-underline flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple"
+                        [routerLink]="['/home', 'action-plan', 'new']"
+                      >
+                        <i class="pi pi-file-plus mr-2"></i>
+                        <span class="font-medium">Nuevo Plan de Mejora</span>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <a
+                    pRipple
+                    [routerLink]="['/home', 'reports']"
+                    class="no-underline flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple"
+                  >
+                    <i class="pi pi-chart-line mr-2"></i>
+                    <span class="font-medium">Reportes</span>
+                  </a>
+                </li>
+              </ul>
+          </ul>
+        </div>
+        <div class="mt-auto">
+          <hr class="mb-3 mx-3 border-top-1 border-none surface-border" />
+          <a
+            pRipple
+            class="m-3 flex align-items-center cursor-pointer p-3 gap-2 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple"
+            (click)="menu.toggle($event)"
+          >
+            <p-avatar
+              icon="pi pi-user"
+              styleClass="mr-2"
+              [style]="{ 'background-color': '#ece9fc', color: '#2a1261' }"
+              shape="circle"
+            />
+            <span class="font-bold text-600"
+              >{{ firstName }} {{ lastName }}</span
+            >
+          </a>
+        </div>
+        <div class="card flex justify-content-center">
+          <p-tieredMenu #menu [model]="items" [popup]="true"></p-tieredMenu>
+        </div>
+      </div>
+    </ng-template>
+    <p-button *ngIf="!staticSidebar" (onClick)="sidebarVisible = true" icon="pi pi-objects-column" class="mr-3"></p-button>
+  </p-sidebar>
+  <p-button (onClick)="sidebarVisible = true" icon="pi pi-objects-column" class="mr-3"></p-button>
+</div>

@@ -1,0 +1,256 @@
+<div class="surface-card p-4 shadow-2 border-round">
+  <p-toolbar styleClass="mb-4 gap-2">
+    <ng-template pTemplate="left">
+      <p-button
+        severity="success"
+        label="Nuevo Registro"
+        icon="pi pi-plus"
+        class="mr-2"
+        (onClick)="openNew()"
+      ></p-button>
+    </ng-template>
+  </p-toolbar>
+
+  <p-table
+    #dt
+    [value]="jobtitles"
+    [rows]="10"
+    [paginator]="true"
+    [(selection)]="selectedJobTitles"
+    [rowHover]="true"
+    dataKey="JobTitleID"
+    currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros."
+    [showCurrentPageReport]="true"
+  >
+    <ng-template pTemplate="caption">
+      <div class="flex align-items-center justify-content-between">
+        <h2 class="text-700 m-0">Puestos de Trabajo</h2>
+        <!--<span class="p-input-icon-left">
+            <i class="pi pi-search"></i>
+            <input
+              pInputText
+              type="text"
+              (input)="dt.filterGlobal($any($event.target).value, 'contains')"
+              placeholder=" Search"
+            />
+          </span>-->
+      </div>
+    </ng-template>
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="Title">
+          Puesto Laboral <p-sortIcon field="Title"></p-sortIcon>
+        </th>
+        <th pSortableColumn="Description">
+          Descripción <p-sortIcon field="Description"></p-sortIcon>
+        </th>
+        <th pSortableColumn="Department">
+          <div class="flex flex-shrink-0">
+            Departamento<p-sortIcon field="Department"></p-sortIcon>
+          </div>
+        </th>
+        <th pSortableColumn="Role">
+          <div class="flex flex-shrink-0">
+            Rol <p-sortIcon field="Role"></p-sortIcon>
+          </div>
+        </th>
+        <th pSortableColumn="JobLevelName">
+          <div class="flex flex-shrink-0">
+            Nivel <p-sortIcon field="JobLevelName"></p-sortIcon>
+          </div>
+        </th>
+        <th pSortableColumn="Status">
+          <div class="flex flex-shrink-0">
+            Estado <p-sortIcon field="Status"></p-sortIcon>
+          </div>
+        </th>
+        <th></th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-jobTitle>
+      <tr>
+        <td>{{ jobTitle.Title }}</td>
+        <td>{{ jobTitle.Description }}</td>
+        <td>{{ jobTitle.Department }}</td>
+        <td>{{ jobTitle.Role }}</td>
+        <td>{{ jobTitle.JobLevelName }}</td>
+        <td>
+          <p-tag
+            [rounded]="true"
+            [value]="jobTitle.Status ? 'Activo' : 'Inactivo'"
+          ></p-tag>
+        </td>
+        <td>
+          <div class="flex flex-shrink-0">
+            <p-button
+              icon="pi pi-pencil"
+              class="mr-2"
+              [rounded]="true"
+              [outlined]="true"
+              severity="success"
+              (onClick)="editJobTitle(jobTitle)"
+            ></p-button>
+            <p-button
+              icon="pi pi-eye-slash"
+              class="mr-2"
+              [rounded]="true"
+              [outlined]="true"
+              severity="warning"
+              (onClick)="deactivateJobTitle(jobTitle.JobTitleID)"
+            >
+            </p-button>
+            <p-button
+              icon="pi pi-trash"
+              severity="danger"
+              [rounded]="true"
+              [outlined]="true"
+              (onClick)="deleteJobTitle(jobTitle.JobTitleID)"
+            ></p-button>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="summary">
+      <div class="flex align-items-center justify-content-between">
+        Hay en total {{ jobtitles ? jobtitles.length : 0 }} puestos de trabajo.
+      </div>
+    </ng-template>
+  </p-table>
+
+  <p-dialog
+    [(visible)]="jobTitleDialog"
+    [style]="{ width: '450px' }"
+    header="Detalles de Puesto Laboral"
+    [modal]="true"
+    styleClass="p-fluid"
+  >
+    <ng-template pTemplate="content">
+      <div class="field">
+        <label for="title">Puesto Laboral</label>
+        <input
+          type="text"
+          pInputText
+          id="title"
+          [(ngModel)]="jobTitle.Title"
+          required
+          autofocus
+        />
+      </div>
+
+      <div class="field">
+        <label for="description">Descripción</label>
+        <textarea
+          rows="5"
+          cols="30"
+          pInputTextarea
+          id="description"
+          [(ngModel)]="jobTitle.Description"
+          required
+        ></textarea>
+      </div>
+      <div class="field">
+        <label for="department">Departamento</label>
+        <p-dropdown
+          [options]="departments"
+          optionLabel="Name"
+          optionValue="DepartmentID"
+          placeholder="Selecciona un departamento"
+          [(ngModel)]="jobTitle.DepartmentID"
+          appendTo="body"
+        >
+        </p-dropdown>
+      </div>
+      <div class="field">
+        <label for="role">Rol Asignado</label>
+        <p-dropdown
+          [options]="roles"
+          optionLabel="Name"
+          optionValue="RoleID"
+          placeholder="Selecciona un rol"
+          [(ngModel)]="jobTitle.RoleID"
+          appendTo="body"
+        >
+        </p-dropdown>
+      </div>
+      <div class="field">
+        <label for="role">Nivel de Puesto</label>
+        <p-dropdown
+          [options]="levels"
+          optionLabel="Name"
+          optionValue="JobLevelID"
+          placeholder="Selecciona un nivel"
+          [(ngModel)]="jobTitle.LevelID"
+          appendTo="body"
+        >
+        </p-dropdown>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="footer">
+      <p-button
+        label="Cancelar"
+        icon="pi pi-times"
+        [text]="true"
+        (onClick)="hideDialog()"
+      />
+      <p-button
+        label="Guardar"
+        icon="pi pi-check"
+        [text]="true"
+        (onClick)="saveJobTitle()"
+      />
+    </ng-template>
+  </p-dialog>
+
+  <p-dialog
+    [(visible)]="jobTitleEditDialog"
+    [style]="{ width: '450px' }"
+    header="Detalles de Puesto Laboral"
+    [modal]="true"
+    styleClass="p-fluid"
+  >
+    <ng-template pTemplate="content">
+      <div class="field">
+        <label for="title">Editar Puesto Laboral</label>
+        <input
+          type="text"
+          pInputText
+          id="title"
+          [(ngModel)]="jobTitle.Title"
+          required
+          autofocus
+        />
+      </div>
+
+      <div class="field">
+        <label for="description">Descripción</label>
+        <textarea
+          rows="5"
+          cols="30"
+          pInputTextarea
+          id="description"
+          [(ngModel)]="jobTitle.Description"
+          required
+        ></textarea>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="footer">
+      <p-button
+        label="Cancelar"
+        icon="pi pi-times"
+        [text]="true"
+        (onClick)="hideEditDialog()"
+      />
+      <p-button
+        label="Guardar"
+        icon="pi pi-check"
+        [text]="true"
+        (onClick)="saveJobTitle()"
+      />
+    </ng-template>
+  </p-dialog>
+
+  <p-confirmDialog [style]="{ width: '450px' }" />
+</div>

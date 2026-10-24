@@ -1,0 +1,95 @@
+<div class="surface-card p-4 shadow-2 border-round">
+  <p-toast/>
+  <p-table
+    #dt
+    [value]="das"
+    [rows]="10"
+    [paginator]="true"
+    [(selection)]="selectedDAs"
+    [rowHover]="true"
+    dataKey="daID"
+    currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros."
+    [showCurrentPageReport]="true"
+  >
+    <ng-template pTemplate="caption">
+      <div class="flex align-items-center justify-content-between">
+        <h2 class="text-700 m-0">Acciones Disciplinarias</h2>
+      </div>
+    </ng-template>
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="IncidentTypeName">
+          Razon
+          <p-sortIcon field="IncidentTypeName"></p-sortIcon>
+        </th>
+        <th pSortableColumn="Reason">
+          Empleado <p-sortIcon field="Reason"></p-sortIcon>
+        </th>
+        <th pSortableColumn="FullName">
+          Supervisor <p-sortIcon field="FullName"></p-sortIcon>
+        </th>
+        <th pSortableColumn="Date">
+          Tipo <p-sortIcon field="Date"></p-sortIcon>
+        </th>
+        <th pSortableColumn="Duration">
+          Fecha <p-sortIcon field="Duration"></p-sortIcon>
+        </th>
+        <th pSortableColumn="Status">
+          Estado <p-sortIcon field="Status"></p-sortIcon>
+        </th>
+        <th></th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-da>
+      <tr>
+        <td>{{ da.ReasonDescription }}</td>
+        <td>{{ da.EmployeeName }}</td>
+        <td>{{ da.ReportedByName }}</td>
+        <td>{{ da.WarningLevelName }}</td>
+        <td>{{ da.DateApplied | date : "yyyy-MM-dd" }}</td>
+        <td>
+          <p-tag
+            [rounded]="true"
+            [value]="da.Acknowledgement ? 'Revisado' : 'Pendiente'"
+            [severity]="da.Acknowledgement ? 'success' : 'danger'"
+          ></p-tag>
+        </td>
+        <td>
+          <p-button
+            icon="pi pi-pencil"
+            class="mr-2"
+            [rounded]="true"
+            [outlined]="true"
+            severity="success"
+            (onClick)="goToDADetails(da.DisciplinaryActionID)"
+          ></p-button>
+          <p-button
+            icon="pi pi-eye-slash"
+            class="mr-2"
+            [rounded]="true"
+            [outlined]="true"
+            severity="warning"
+            (onClick)="deactivateDA(da)"
+          >
+          </p-button>
+          <p-button
+            icon="pi pi-trash"
+            severity="danger"
+            [rounded]="true"
+            [outlined]="true"
+            (onClick)="deleteDA(da.DisciplinaryActionID)"
+          ></p-button>
+        </td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="summary">
+      <div class="flex align-items-center justify-content-between">
+        En total hay {{ das ? das.length : 0 }} registros.
+      </div>
+    </ng-template>
+  </p-table>
+  <p-confirmDialog [style]="{ width: '500px' }" />
+</div>

@@ -1,0 +1,90 @@
+<div class="surface-card p-4 shadow-2 border-round">
+    <p-table
+      #dt
+      [value]="actionPlans"
+      [rows]="10"
+      [paginator]="true"
+      [(selection)]="selectedActionPlans"
+      [rowHover]="true"
+      dataKey="daID"
+      currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros."
+      [showCurrentPageReport]="true"
+    >
+      <ng-template pTemplate="caption">
+        <div class="flex align-items-center justify-content-between">
+          <h2 class="text-700 m-0">Planes de Mejora</h2>
+        </div>
+      </ng-template>
+  
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="Reason">
+            Empleado <p-sortIcon field="Reason"></p-sortIcon>
+          </th>
+          <th pSortableColumn="FullName">
+            Supervisor <p-sortIcon field="FullName"></p-sortIcon>
+          </th>
+          <th pSortableColumn="FocusArea">
+            Area de Mejora <p-sortIcon field="FocusArea"></p-sortIcon>
+          </th>
+          <th pSortableColumn="ActionPlanStatus">
+            Estado del Plan <p-sortIcon field="ActionPlanStatus"></p-sortIcon>
+          </th>
+          <th pSortableColumn="Acknowledgement">
+            Firmado <p-sortIcon field="Acknowledgement"></p-sortIcon>
+          </th>
+          <th></th>
+        </tr>
+      </ng-template>
+  
+      <ng-template pTemplate="body" let-actionPlan>
+        <tr>
+          <td>{{ actionPlan.EmployeeName }}</td>
+          <td>{{ actionPlan.AppliedByName }}</td>
+          <td>{{ actionPlan.FocusArea }}</td>
+          <td>{{ actionPlan.ActionPlanStatus }}</td>
+          <td>
+            <p-tag
+              [rounded]="true"
+              [value]="actionPlan.Acknowledgement ? 'Revisado' : 'Pendiente'"
+              [severity]="actionPlan.Acknowledgement ? 'success' : 'warning'"
+            ></p-tag>
+          </td>
+          <td>
+            <p-button
+              icon="pi pi-pencil"
+              class="mr-2"
+              [rounded]="true"
+              [outlined]="true"
+              severity="success"
+              (onClick)="goToActionPlanDetails(actionPlan.ActionPlanID)"
+            ></p-button>
+            <p-button
+              icon="pi pi-eye-slash"
+              class="mr-2"
+              [rounded]="true"
+              [outlined]="true"
+              severity="warning"
+              (onClick)="deactivateActionPlan(actionPlan)"
+            >
+            </p-button>
+            <p-button
+              icon="pi pi-trash"
+              severity="danger"
+              [rounded]="true"
+              [outlined]="true"
+              (onClick)="deleteActionPlan(actionPlan.ActionPlanID)"
+            ></p-button>
+          </td>
+        </tr>
+      </ng-template>
+  
+      <ng-template pTemplate="summary">
+        <div class="flex align-items-center justify-content-between">
+          En total hay {{ actionPlans ? actionPlans.length : 0 }} registros.
+        </div>
+      </ng-template>
+    </p-table>
+  
+    <p-confirmDialog [style]="{ width: '500px' }" />
+  </div>  

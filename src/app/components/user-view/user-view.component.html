@@ -1,0 +1,357 @@
+<div class="surface-card p-4 shadow-2 border-round">
+  <p-toolbar styleClass="mb-4 gap-2">
+    <ng-template pTemplate="left">
+      <p-button
+        severity="success"
+        label="Nuevo Registro"
+        icon="pi pi-plus"
+        class="mr-2"
+        (onClick)="openNew()"
+      ></p-button>
+    </ng-template>
+
+    <ng-template pTemplate="right">
+      <p-button
+        icon="pi pi-times"
+        severity="danger"
+        class="mr-2"
+        [text]="true"
+        (click)="clearFileUpload()"
+      ></p-button>
+      <p-fileUpload
+      #fileUploader
+        mode="basic"
+        [customUpload]="true"
+        accept=".csv"
+        [maxFileSize]="1000000"
+        chooseLabel="Importar CSV"
+        class="mr-2 inline-block"
+        (onSelect)="onFileSelected($event)"
+        (uploadHandler)="onUpload($event)"
+      ></p-fileUpload>
+    </ng-template>
+  </p-toolbar>
+
+  <p-table
+    #dt
+    [value]="users"
+    [rows]="10"
+    [paginator]="true"
+    [(selection)]="selectedUsers"
+    [rowHover]="true"
+    dataKey="UserID"
+    currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros."
+    [showCurrentPageReport]="true"
+    [globalFilterFields]="['FirstName', 'WorkEmail']"
+  >
+    <ng-template pTemplate="caption">
+      <div class="flex align-items-center justify-content-between">
+        <h2 class="text-700 m-0">Usuarios</h2>
+        <span class="p-input-icon-left">
+          <i class="pi pi-search"></i>
+          <input
+            pInputText
+            type="text"
+            (input)="onFilterGlobal($event)"
+            placeholder="Buscar"
+          />
+        </span>
+      </div>
+    </ng-template>
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="FirstName">
+          <div class="flex flex-shrink-0">
+            Nombre <p-sortIcon field="FirstName"></p-sortIcon>
+          </div>
+        </th>
+        <th pSortableColumn="WorkEmail">
+          <div class="flex flex-shrink-0">
+            Correo Laboral <p-sortIcon field="WorkEmail"></p-sortIcon>
+          </div>
+        </th>
+        <th pSortableColumn="PhoneNumber">
+          <div class="flex flex-shrink-0">
+            Télefono <p-sortIcon field="PhoneNumber"></p-sortIcon>
+          </div>
+        </th>
+        <th pSortableColumn="Status">
+          <div class="flex flex-shrink-0">
+            Estado <p-sortIcon field="Status"></p-sortIcon>
+          </div>
+        </th>
+        <th pSortableColumn="IsPasswordSet">
+          <div class="flex flex-shrink-0">
+            Registro <p-sortIcon field="IsPasswordSet"></p-sortIcon>
+          </div>
+        </th>
+        <th></th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-user>
+      <tr>
+        <td>{{ user.FirstName }} {{ user.LastName }}</td>
+        <td>{{ user.WorkEmail }}</td>
+        <td>{{ user.PhoneNumber }}</td>
+        <td>
+          <p-tag
+            severity="info"
+            [rounded]="true"
+            [value]="user.Status ? 'Activo' : 'Inactivo'"
+            [severity]="user.Status ? 'success' : 'warning'"
+          ></p-tag>
+        </td>
+        <td>
+          <p-tag
+            severity="warning"
+            [rounded]="true"
+            [value]="user.IsPasswordSet ? 'Completo' : 'Pendiente'"
+            [severity]="user.IsPasswordSet ? 'info' : 'danger'"
+          ></p-tag>
+        </td>
+        <td>
+          <p-button
+            icon="pi pi-pencil"
+            class="mr-2"
+            [rounded]="true"
+            [outlined]="true"
+            severity="success"
+            (onClick)="goToUserDetails(user.UserID)"
+          >
+          </p-button>
+          <p-button
+            [icon]="user.Status ? 'pi pi-eye-slash' : 'pi pi-eye'"
+            class="mr-2"
+            [rounded]="true"
+            [outlined]="true"
+            severity="warning"
+            (onClick)="user.Status ? deactivateUser(user.UserID) : enableUser(user.UserID)"
+          >
+          </p-button>
+          <p-button
+            icon="pi pi-folder-open"
+            class="mr-2"
+            [rounded]="true"
+            [outlined]="true"
+            severity="info"
+            (onClick)="goToUserDocs(user.UserID)"
+          >
+          </p-button>
+          <p-button
+            icon="pi pi-trash"
+            severity="danger"
+            [rounded]="true"
+            [outlined]="true"
+            (onClick)="deleteUser(user.UserID)"
+          ></p-button>
+        </td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="summary">
+      <div class="flex align-items-center justify-content-between">
+        Hay un total de {{ users ? users.length : 0 }} usuarios.
+      </div>
+    </ng-template>
+  </p-table>
+
+  <p-dialog
+    [(visible)]="userDialog"
+    [style]="{ width: '450px' }"
+    header="Detalles de Usuario"
+    [modal]="true"
+    styleClass="p-fluid"
+  >
+    <ng-template pTemplate="content">
+      <div class="field">
+        <label for="firstName">Nombre</label>
+        <input
+          type="text"
+          pInputText
+          id="firstName"
+          [(ngModel)]="user.FirstName"
+          required
+          autofocus
+        />
+      </div>
+      <div class="field">
+        <label for="lastName">Apellido</label>
+        <input
+          type="text"
+          pInputText
+          id="lastName"
+          [(ngModel)]="user.LastName"
+          required
+        />
+      </div>
+
+      <div class="field">
+        <label for="personalEmail">Correo Personal</label>
+        <input
+          type="email"
+          pInputText
+          id="personalEmail"
+          [(ngModel)]="user.PersonalEmail"
+          required
+        />
+      </div>
+      <div class="field">
+        <label for="department">Departamento</label>
+        <p-dropdown
+          [options]="departments"
+          optionLabel="Name"
+          optionValue="DepartmentID"
+          id="department"
+          placeholder="Selecciona un departamento"
+          [(ngModel)]="user.DepartmentID"
+          (onChange)="onDepartmentSelect($event)"
+        >
+        </p-dropdown>
+      </div>
+
+      <div *ngIf="jobTitles.length > 0" class="field">
+        <label for="jobTitle">Puestos de Trabajo</label>
+        <p-dropdown
+          [options]="jobTitles"
+          optionLabel="Title"
+          optionValue="JobTitleID"
+          id="jobTitle"
+          placeholder="Selecciona un puesto de trabajo"
+          [(ngModel)]="user.JobTitleID"
+        ></p-dropdown>
+      </div>
+
+      <div class="field">
+        <label for="manager">Jefe Directo</label>
+        <p-dropdown
+          [options]="managers"
+          optionLabel="UserName"
+          optionValue="UserID"
+          id="manager"
+          placeholder="Selecciona jefe directo"
+          [(ngModel)]="user.ManagerID"
+        >
+        </p-dropdown>
+      </div>
+
+      <div class="field">
+        <label for="birthDate">Fecha de Nacimiento</label>
+        <p-calendar
+          [iconDisplay]="'input'"
+          id="birthDate"
+          [(ngModel)]="user.BirthDate"
+          [showIcon]="true"
+          required
+        />
+      </div>
+
+      <div class="field">
+        <label for="gender">Género</label>
+        <p-dropdown
+          [(ngModel)]="user.Gender"
+          [options]="[
+            { label: 'Masculino', value: 'M' },
+            { label: 'Femenino', value: 'F' }
+          ]"
+          placeholder="Género"
+        ></p-dropdown>
+      </div>
+
+      <div class="field">
+        <label for="phoneNumber"># Télefono</label>
+        <input
+          type="text"
+          pInputText
+          id="phoneNumber"
+          [(ngModel)]="user.PhoneNumber"
+          required
+        />
+      </div>
+
+      <div class="field">
+        <label for="taxId"># Identificación</label>
+        <input
+          type="text"
+          pInputText
+          id="taxId"
+          [(ngModel)]="user.TaxID"
+          required
+        />
+      </div>
+
+      <div class="field">
+        <label for="streetAddress">Calle</label>
+        <input
+          type="text"
+          pInputText
+          id="streetAddress"
+          [(ngModel)]="user.StreetAddress"
+          required
+        />
+      </div>
+
+      <div class="field">
+        <label for="city">Ciudad</label>
+        <input
+          type="text"
+          pInputText
+          id="city"
+          [(ngModel)]="user.City"
+          required
+        />
+      </div>
+
+      <div class="field">
+        <label for="state">Estado</label>
+        <input
+          type="text"
+          pInputText
+          id="state"
+          [(ngModel)]="user.State"
+          required
+        />
+      </div>
+
+      <div class="field">
+        <label for="postalCode">Código Postal</label>
+        <input
+          type="text"
+          pInputText
+          id="postalCode"
+          [(ngModel)]="user.PostalCode"
+          required
+        />
+      </div>
+
+      <div class="field">
+        <label for="country">País</label>
+        <input
+          type="text"
+          pInputText
+          id="country"
+          [(ngModel)]="user.Country"
+          required
+        />
+      </div>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+      <p-button
+        label="Cancelar"
+        icon="pi pi-times"
+        [text]="true"
+        (onClick)="hideDialog()"
+      />
+      <p-button
+        label="Guardar"
+        icon="pi pi-check"
+        [text]="true"
+        (onClick)="saveUser()"
+      />
+    </ng-template>
+  </p-dialog>
+
+  <p-confirmDialog [style]="{ width: '450px' }" />
+</div>
